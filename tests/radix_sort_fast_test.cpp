@@ -29,15 +29,17 @@ int main() {
 
   bool sorted = is_sorted(elements.begin(), elements.end(), comp);
   if(sorted){
-    std::cout << "[SUCCESS] Sorted small integer array.\n"; 
+    std::cout << "[SUCCESS] Sorting small integer array.\n"; 
   }else{
+    std::cout << "[FAILED] Sorting small integer array.\n"; 
     return 1;
   }
 
   sorted = is_sorted(elements_pair.begin(), elements_pair.end(), comp_pair);
   if(sorted){
-    std::cout << "[SUCCESS] Sorted small struct (key,value) array.\n"; 
+    std::cout << "[SUCCESS] Sorting small struct (key,value) array.\n"; 
   }else{
+    std::cout << "[FAILED] Sorting small integer array.\n"; 
     return 1;
   }
 
