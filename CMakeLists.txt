@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.12)
+set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
+project(radix_sort VERSION 0.1.0)
+
+ENABLE_TESTING()
+ADD_SUBDIRECTORY(sort)
+ADD_SUBDIRECTORY(tests)
