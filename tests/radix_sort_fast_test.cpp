@@ -19,9 +19,10 @@ bool is_sorted(const Iterator begin, const Iterator end, const Comparator comp) 
 }
 
 int main() {
-  std::array elements{43, 515, 645, 3, 12, 5, 64523, 5423, 43, 6454};
-  auto comp = [](const int& a, const int& b) { return a <= b; };
-  std::array<key_data_pair, 10> elements_pair;
+  std::array<uint32_t,10> elements{43, 515, 645, 3, 12, 5, 64523, 5423, 43, 6454};
+  std::array<key_data_pair, 100000> elements_pair;
+
+  auto comp = [](const uint32_t a, const uint32_t b) { return a <= b; };
   auto comp_pair = [](const key_data_pair& a, const key_data_pair& b) {return a.key <= b.key;};
 
   rdx::radix_sort(elements.begin(), elements.end(), comp);
