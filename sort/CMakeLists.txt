@@ -4,8 +4,8 @@ endif()
 
 
 set (CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS_RELEASE "-fPIC -O3 -Wall -Wextra -Werror -Wno-unused-private-field")
-set(CMAKE_CXX_FLAGS_DEBUG "-fPIC -Og -Wall -Wextra")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wextra -Werror -Wno-unused-private-field")
+set(CMAKE_CXX_FLAGS_DEBUG "-Og -Wall -Wextra")
 
 #Create lib
 add_library(radix_sort STATIC)
