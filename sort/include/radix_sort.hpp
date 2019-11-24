@@ -40,6 +40,7 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
   std::unique_ptr<data_type[]> data_cache(new data_type[element_count]);
   //Start of actual work
   for (size_t depth = 0; depth < size_of_key; ++depth) {
+  //for (size_t depth : {3,2,1,0}) {
     std::array<size_t, 256> bucket_size{0};  // Init to 0
     // Read bytes and count occurances
     for (size_t i = 0; i < element_count; ++i) {

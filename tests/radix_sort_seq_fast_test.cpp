@@ -1,6 +1,7 @@
 #include <array>
 #include <vector>
 #include <radix_sort.hpp>
+#include <iomanip>
 #if 0
 struct key_data_pair {
   key_data_pair() {
@@ -13,7 +14,7 @@ struct key_data_pair {
 };
 
 int main() {
-  std::vector<key_data_pair> elements_pair(1000);
+  std::vector<key_data_pair> elements_pair(100);
   std::vector<key_data_pair> elements_pair_old(elements_pair);
 
   auto comp_pair = [](const key_data_pair& a, const key_data_pair& b) {return a.key < b.key;};
@@ -29,7 +30,7 @@ int main() {
   }else{
     std::cout << "[FAILED] Sorting small integer array.\n"; 
     for(size_t i = 0; i < elements_pair.size(); ++i){
-     std::cout << "o:n " << elements_pair_old[i].key << ":" << elements_pair[i].key << '\n';
+     std::cout << "o:n " << std::setfill('0') << std::setw(4) << std::hex << elements_pair_old[i].key << ":" << std::setfill('0') << std::setw(4) << std::hex << elements_pair[i].key << '\n';
     }
     return 1;
   }

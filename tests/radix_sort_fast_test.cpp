@@ -1,6 +1,7 @@
 #include <array>
 #include <vector>
 #include <radix_sort.hpp>
+#if 1
 struct key_data_pair {
   key_data_pair() {
     static uint32_t up_counter = 0;
@@ -46,3 +47,24 @@ int main() {
 
   return 0;
 }
+#else
+int main() {
+  std::vector<uint32_t> values(10000000);
+  std::generate(values.begin(), values.end(), std::rand);
+
+  auto getter = [](const uint32_t& a, const uint32_t& b){return a < b;};
+  rdx::radix_sort(values.begin(), values.end(), getter);
+//  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
+
+  bool sorted = std::is_sorted(values.begin(), values.end());
+  if(sorted){
+    std::cout << "[SUCCESS] Sorting small struct (key,value) array.\n";
+  }else{
+    std::cout << "[FAILED] Sorting small integer array.\n";
+    return 1;
+  }
+
+  return 0;
+}
+
+#endif
