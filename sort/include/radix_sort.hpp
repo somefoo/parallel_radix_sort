@@ -11,6 +11,8 @@
 #include <type_traits>
 #include <typeinfo>
 
+#include "debug_helper.hpp"
+
 namespace rdx {
 namespace {}
 template <typename Iterator, typename Comparator>
@@ -34,22 +36,22 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
   constexpr const size_t size_of_key = sizeof(key_getter(*begin));
   const size_t element_count = std::distance(begin, end);
 
-  //Start of actual work
   std::unique_ptr<uint8_t[]> key_cache(new uint8_t[element_count]);
   std::unique_ptr<data_type[]> data_cache(new data_type[element_count]);
-
+  //Start of actual work
   for (size_t depth = 0; depth < size_of_key; ++depth) {
     std::array<size_t, 256> bucket_size{0};  // Init to 0
     // Read bytes and count occurances
     for (size_t i = 0; i < element_count; ++i) {
 			auto key = key_getter(*(begin + i));
-      key_cache[i] = reinterpret_cast<char*>(&key)[depth];
+      key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth];
 			++bucket_size[key_cache[i]];
     }
 
 		//Prefix sum
 		std::array<data_type*, 256> bucket;
 		bucket[0] = data_cache.get();
+      
 		for(size_t i = 1; i < 256; ++i){
 			bucket[i] = bucket[i - 1] + bucket_size[i - 1];	
 		}	
