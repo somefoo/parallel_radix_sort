@@ -60,6 +60,8 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
 		for(size_t i = 0; i < element_count; ++i){
 			*(bucket[key_cache[i]]++) = *(begin + i);
 		}	
+    //We could actually be much faster with a swap (two moves), but I need the
+    //whole object not just iterators.
     std::copy(data_cache.get(), data_cache.get() + element_count, begin);
   }
   // TODO CONTINUE
