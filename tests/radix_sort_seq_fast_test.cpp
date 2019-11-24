@@ -12,19 +12,24 @@ struct key_data_pair {
 };
 
 int main() {
-  std::vector<key_data_pair> elements_pair(10000);
+  std::vector<key_data_pair> elements_pair(1000);
+  std::vector<key_data_pair> elements_pair_old(elements_pair);
 
   auto comp_pair = [](const key_data_pair& a, const key_data_pair& b) {return a.key < b.key;};
   auto key_getter_pair = [](const key_data_pair& a) {return a.key;};
   
+
   rdx::radix_sort_seq(elements_pair.begin(), elements_pair.end(), key_getter_pair);
-  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
+//  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
 
   bool sorted = std::is_sorted(elements_pair.begin(), elements_pair.end(), comp_pair);
   if(sorted){
     std::cout << "[SUCCESS] Sorting small struct (key,value) array.\n"; 
   }else{
     std::cout << "[FAILED] Sorting small integer array.\n"; 
+    for(size_t i = 0; i < elements_pair.size(); ++i){
+     std::cout << "o:n " << elements_pair_old[i].key << ":" << elements_pair[i].key << '\n';
+    }
     return 1;
   }
 
