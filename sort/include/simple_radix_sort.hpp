@@ -14,7 +14,7 @@
 namespace rdx {
 namespace {}
 static inline void simple_radix_sort_seq(uint32_t* start, uint32_t* end) {
-  const size_t count = (end - start) / sizeof(uint32_t);
+  const size_t count = end - start;
   uint32_t* sorted = new uint32_t[count];
   uint8_t* key_cache = new uint8_t[count];
 
