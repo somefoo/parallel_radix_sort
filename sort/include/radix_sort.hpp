@@ -48,11 +48,11 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
 
   //Start of actual work
   for (size_t depth = 0; depth < size_of_key; ++depth) {
-  //for (size_t depth : {3,2,1,0}) {
     std::array<size_t, 256> bucket_size{0};  // Init to 0
     // Read bytes and count occurances
     for (size_t i = 0; i < element_count; ++i) {
 			auto key = key_getter(*(begin_original + i));
+      //TODO WARNING ENDIANESS!
       key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth];
       //TODO Fissioned loops slow if objects are not key-only (useless cache fill)?
 		  ++bucket_size[key_cache[i]];
