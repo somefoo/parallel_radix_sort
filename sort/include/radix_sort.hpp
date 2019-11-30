@@ -54,7 +54,8 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
     for (size_t i = 0; i < element_count; ++i) {
 			auto key = key_getter(*(begin_original + i));
       key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth];
-			++bucket_size[key_cache[i]];
+      //TODO Fissioned loops slow if objects are not key-only (useless cache fill)?
+		  ++bucket_size[key_cache[i]];
     }
 
 		//Prefix sum
@@ -66,7 +67,7 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
 		}	
 
 		for(size_t i = 0; i < element_count; ++i){
-			*(bucket[key_cache[i]]++) = *(begin_original + i);
+			*(bucket[key_cache[i]]++) = std::move(*(begin_original + i));
 		}	
     //We could actually be much faster with a swap (two moves), but I need the
     //whole object not just iterators.
@@ -77,7 +78,7 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
 
   //If number of iterations was odd (we need to copy)
   if(size_of_key & 1){
-    std::copy(data_cache.get(), data_cache.get() + element_count, begin);
+    std::move(data_cache.get(), data_cache.get() + element_count, begin);
   }
   // TODO CONTINUE
 }
