@@ -38,30 +38,45 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
 
   std::unique_ptr<uint8_t[]> key_cache(new uint8_t[element_count]);
   std::unique_ptr<data_type[]> data_cache(new data_type[element_count]);
+
+
+  //We use pointers internally; we don't have concepts yet...
+  data_type* begin_original = &*begin;
+  data_type* end_original = &*end;
+  data_type* begin_cache = data_cache.get();
+  data_type* end_cache = &(data_cache[element_count - 1]);
+
   //Start of actual work
   for (size_t depth = 0; depth < size_of_key; ++depth) {
   //for (size_t depth : {3,2,1,0}) {
     std::array<size_t, 256> bucket_size{0};  // Init to 0
     // Read bytes and count occurances
     for (size_t i = 0; i < element_count; ++i) {
-			auto key = key_getter(*(begin + i));
+			auto key = key_getter(*(begin_original + i));
       key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth];
 			++bucket_size[key_cache[i]];
     }
 
 		//Prefix sum
 		std::array<data_type*, 256> bucket;
-		bucket[0] = data_cache.get();
+		bucket[0] = begin_cache;
       
 		for(size_t i = 1; i < 256; ++i){
 			bucket[i] = bucket[i - 1] + bucket_size[i - 1];	
 		}	
 
 		for(size_t i = 0; i < element_count; ++i){
-			*(bucket[key_cache[i]]++) = *(begin + i);
+			*(bucket[key_cache[i]]++) = *(begin_original + i);
 		}	
     //We could actually be much faster with a swap (two moves), but I need the
     //whole object not just iterators.
+    std::swap(begin_original, begin_cache);
+    std::swap(end_original, end_cache);
+    //std::copy(data_cache.get(), data_cache.get() + element_count, begin);
+  }
+
+  //If number of iterations was odd (we need to copy)
+  if(size_of_key & 1){
     std::copy(data_cache.get(), data_cache.get() + element_count, begin);
   }
   // TODO CONTINUE
