@@ -83,4 +83,72 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
   // TODO CONTINUE
 }
 
+template <typename Iterator, typename KeyGetter>
+static inline void radix_sort_par(const Iterator begin, const Iterator end,
+                                  const KeyGetter key_getter) {
+  static constexpr size_t core_count = 8;
+  typedef typename std::iterator_traits<Iterator>::value_type data_type;
+  constexpr const size_t size_of_key = sizeof(key_getter(*begin));
+  const size_t element_count = std::distance(begin, end);
+
+  std::unique_ptr<uint8_t[]> key_cache(new uint8_t[element_count]);
+  std::unique_ptr<data_type[]> data_cache(new data_type[element_count]);
+
+
+  //We use pointers internally; we don't have concepts yet...
+  data_type* begin_original = &*begin;
+  data_type* end_original = &*end;
+  data_type* begin_cache = data_cache.get();
+  data_type* end_cache = &(data_cache[element_count - 1]);
+
+  //Start of actual work
+  for (size_t depth = 0; depth < size_of_key; ++depth) {
+    std::array<size_t, 256> bucket_size{0};  // Init to 0
+    // Read bytes and count occurances
+    
+    #pragma omp parallel
+    {
+      std::array<size_t, 256> private_bucket_size{0};  // Init to 0
+      
+      #pragma omp for nowait schedule(static)
+      for (size_t i = 0; i < element_count; ++i) {
+        auto key = key_getter(*(begin_original + i)); 
+        key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth];
+      }
+      #pragma omp critical
+      for(size_t i = 0; i < private_bucket_size.size(); ++i){
+        bucket_size[i] += private_bucket_size[i];
+      } 
+      #pragma omp barrier
+      #pragma omp critical
+      for(size_t i = 0; i < element_count; ++i)
+        ++bucket_size[key_cache[i]];
+      #pragma omp barrier
+    }
+
+		//Prefix sum
+		std::array<data_type*, 256> bucket;
+		bucket[0] = begin_cache;
+      
+		for(size_t i = 1; i < 256; ++i){
+			bucket[i] = bucket[i - 1] + bucket_size[i - 1];	
+		}	
+
+		for(size_t i = 0; i < element_count; ++i){
+			*(bucket[key_cache[i]]++) = std::move(*(begin_original + i));
+		}	
+    //We could actually be much faster with a swap (two moves), but I need the
+    //whole object not just iterators.
+    std::swap(begin_original, begin_cache);
+    std::swap(end_original, end_cache);
+    //std::copy(data_cache.get(), data_cache.get() + element_count, begin);
+  }
+
+  //If number of iterations was odd (we need to copy)
+  if(size_of_key & 1){
+    std::move(data_cache.get(), data_cache.get() + element_count, begin);
+  }
+  // TODO CONTINUE
+}
+
 }  // namespace rdx

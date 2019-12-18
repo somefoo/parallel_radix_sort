@@ -15,6 +15,9 @@ add_executable(radix_sort_seq_fast_test radix_sort_seq_fast_test.cpp)
 target_link_libraries(radix_sort_seq_fast_test PRIVATE radix_sort)
 add_test(RadixSortSeqFastTest radix_sort_seq_fast_test)
 
+add_executable(radix_sort_par_fast_test radix_sort_par_fast_test.cpp)
+target_link_libraries(radix_sort_par_fast_test PRIVATE radix_sort)
+add_test(RadixSortParFastTest radix_sort_par_fast_test)
 
 add_executable(simple_radix_sort_seq_fast_test simple_radix_sort_fast_test.cpp)
 target_link_libraries(simple_radix_sort_seq_fast_test PRIVATE radix_sort)
