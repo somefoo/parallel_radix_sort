@@ -11,6 +11,8 @@
 #include <type_traits>
 #include <typeinfo>
 
+#include <omp.h>
+
 #include "debug_helper.hpp"
 
 namespace rdx {
@@ -105,38 +107,45 @@ static inline void radix_sort_par(const Iterator begin, const Iterator end,
   for (size_t depth = 0; depth < size_of_key; ++depth) {
     std::array<size_t, 256> bucket_size{0};  // Init to 0
     // Read bytes and count occurances
-    
+
+    //static schedule to minimise false sharing
+    #pragma omp parallel for schedule(static) 
+    for (size_t i = 0; i < element_count; ++i) {
+      auto key = key_getter(*(begin_original + i)); 
+      key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth];
+    }
+
+    //TODO this is not running parallel?
     #pragma omp parallel
     {
       std::array<size_t, 256> private_bucket_size{0};  // Init to 0
-      
-      #pragma omp for nowait schedule(static)
+      #pragma omp for schedule(static)
       for (size_t i = 0; i < element_count; ++i) {
-        auto key = key_getter(*(begin_original + i)); 
-        key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth];
+        ++private_bucket_size[key_cache[i]];
       }
       #pragma omp critical
       for(size_t i = 0; i < private_bucket_size.size(); ++i){
         bucket_size[i] += private_bucket_size[i];
       } 
-      #pragma omp barrier
-      #pragma omp critical
-      for(size_t i = 0; i < element_count; ++i)
-        ++bucket_size[key_cache[i]];
-      #pragma omp barrier
     }
 
+    
 		//Prefix sum
 		std::array<data_type*, 256> bucket;
 		bucket[0] = begin_cache;
+    //same as std::array<data_type*, 256> bucket{begin_cache}?
       
 		for(size_t i = 1; i < 256; ++i){
 			bucket[i] = bucket[i - 1] + bucket_size[i - 1];	
 		}	
 
+    //#pragma omp parallel num_threads(8)
 		for(size_t i = 0; i < element_count; ++i){
+      //int thread_id = omp_get_thread_num();
+      //if(key_cache[i] % 8 == thread_id)
 			*(bucket[key_cache[i]]++) = std::move(*(begin_original + i));
 		}	
+
     //We could actually be much faster with a swap (two moves), but I need the
     //whole object not just iterators.
     std::swap(begin_original, begin_cache);

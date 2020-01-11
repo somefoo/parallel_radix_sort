@@ -1,5 +1,6 @@
 #include <array>
 #include <vector>
+#include "control.hpp"
 #include <radix_sort.hpp>
 #include <iomanip>
 #if 0
@@ -39,7 +40,7 @@ int main() {
 }
 #else
 int main() {
-  std::vector<uint32_t> values(10000000);
+  std::vector<uint32_t> values(value_count);
   std::generate(values.begin(), values.end(), std::rand);
 
 	auto getter = [](const uint32_t& val){return val;};

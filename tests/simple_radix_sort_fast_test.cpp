@@ -1,8 +1,9 @@
 #include <array>
 #include <vector>
+#include "control.hpp"
 #include <simple_radix_sort.hpp>
 int main() {
-  std::vector<uint32_t> values(10000000);
+  std::vector<uint32_t> values(value_count);
   std::generate(values.begin(), values.end(), std::rand);
 
   rdx::simple_radix_sort_seq(&(*values.begin()), &(*values.end()));

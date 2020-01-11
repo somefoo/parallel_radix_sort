@@ -1,5 +1,6 @@
 #include <array>
 #include <vector>
+#include "control.hpp"
 #include <radix_sort.hpp>
 #if 1
 struct key_data_pair {
