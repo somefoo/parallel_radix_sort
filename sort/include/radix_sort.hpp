@@ -142,12 +142,16 @@ static inline void radix_sort_par(const Iterator begin, const Iterator end,
 			bucket[i] = bucket[i - 1] + bucket_size[i - 1];	
 		}	
 
-    //#pragma omp parallel num_threads(8)
+    //TODO The greates performance hit comes here!  
+    #pragma omp parallel num_threads(8)
+    {
+    std::array<data_type*, 256> bucket_local = bucket;
 		for(size_t i = 0; i < element_count; ++i){
-      //int thread_id = omp_get_thread_num();
-      //if(key_cache[i] % 8 == thread_id)
-			*(bucket[key_cache[i]]++) = std::move(*(begin_original + i));
+      int thread_id = omp_get_thread_num();
+      if(key_cache[i] % 8 == thread_id)
+			*(bucket_local[key_cache[i]]++) = std::move(*(begin_original + i));
 		}	
+    }
     TIME_PRINT_RESET("Redistribute data");
 
     //We could actually be much faster with a swap (two moves), but I need the
