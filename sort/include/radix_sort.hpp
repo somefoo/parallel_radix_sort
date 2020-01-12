@@ -88,6 +88,7 @@ static inline void radix_sort_seq(const Iterator begin, const Iterator end,
 template <typename Iterator, typename KeyGetter>
 static inline void radix_sort_par(const Iterator begin, const Iterator end,
                                   const KeyGetter key_getter) {
+  TIME_START();
   static constexpr size_t core_count = 8;
   typedef typename std::iterator_traits<Iterator>::value_type data_type;
   constexpr const size_t size_of_key = sizeof(key_getter(*begin));
@@ -102,6 +103,7 @@ static inline void radix_sort_par(const Iterator begin, const Iterator end,
   data_type* end_original = &*end;
   data_type* begin_cache = data_cache.get();
   data_type* end_cache = &(data_cache[element_count - 1]);
+  TIME_PRINT_RESET("Setup time");
 
   //Start of actual work
   for (size_t depth = 0; depth < size_of_key; ++depth) {
@@ -114,6 +116,7 @@ static inline void radix_sort_par(const Iterator begin, const Iterator end,
       auto key = key_getter(*(begin_original + i)); 
       key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth];
     }
+    TIME_PRINT_RESET("Create Cache");
 
     //TODO this is not running parallel?
     #pragma omp parallel
@@ -128,7 +131,7 @@ static inline void radix_sort_par(const Iterator begin, const Iterator end,
         bucket_size[i] += private_bucket_size[i];
       } 
     }
-
+    TIME_PRINT_RESET("Find bucket size");
     
 		//Prefix sum
 		std::array<data_type*, 256> bucket;
@@ -145,6 +148,7 @@ static inline void radix_sort_par(const Iterator begin, const Iterator end,
       //if(key_cache[i] % 8 == thread_id)
 			*(bucket[key_cache[i]]++) = std::move(*(begin_original + i));
 		}	
+    TIME_PRINT_RESET("Redistribute data");
 
     //We could actually be much faster with a swap (two moves), but I need the
     //whole object not just iterators.
