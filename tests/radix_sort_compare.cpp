@@ -46,13 +46,27 @@ int main() {
   std::vector<uint32_t> values2(value_count);
   values2 = values;
 
+  bool sorted = 1;
 	auto getter = [](const uint32_t& val){return val;};
-  TIME_FUNCTION(rdx::radix_sort_par(values.begin(), values.end(), getter);, " par. time");
-  TIME_FUNCTION(rdx::radix_sort_seq(values2.begin(), values2.end(), getter);, " seq. time");
+
+  TIME_FUNCTION(rdx::radix_sort_par_nibble(values2.begin(), values2.end(), getter);, " par. nibble time");
+  values2 = values;
+  sorted &= std::is_sorted(values2.begin(), values2.end());
+
+  TIME_FUNCTION(rdx::radix_sort_par(values2.begin(), values2.end(), getter);, " par. byte time");
+  values2 = values;
+  sorted &= std::is_sorted(values2.begin(), values2.end());
+
+
+  TIME_FUNCTION(rdx::radix_sort_par_short(values2.begin(), values2.end(), getter);, " par. short time");
+  values2 = values;
+  sorted &= std::is_sorted(values2.begin(), values2.end());
+
+  TIME_FUNCTION(rdx::radix_sort_seq(values2.begin(), values2.end(), getter);, " seq. byte time");
+  values2 = values;
+  sorted &= std::is_sorted(values2.begin(), values2.end());
 //  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
 
-  bool sorted = std::is_sorted(values.begin(), values.end());
-  sorted &= std::is_sorted(values2.begin(), values2.end());
   if(sorted){
     std::cout << "[SUCCESS] Sorting small struct (key,value) array.\n";
   }else{

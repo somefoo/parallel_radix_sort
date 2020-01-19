@@ -3,7 +3,7 @@
 #include "control.hpp"
 #include <radix_sort.hpp>
 #include <iomanip>
-#if 1
+#if 0
 struct key_data_pair {
   key_data_pair() {
     static uint32_t up_counter = 0;
@@ -40,18 +40,22 @@ int main() {
 }
 #else
 int main() {
-  std::vector<uint32_t> values(value_count);
+  std::vector<uint32_t> values(100);
   std::generate(values.begin(), values.end(), std::rand);
+  std::vector<uint32_t> values_old(values);
 
 	auto getter = [](const uint32_t& val){return val;};
   rdx::radix_sort_par(values.begin(), values.end(), getter);
-//  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
+  //rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
 
   bool sorted = std::is_sorted(values.begin(), values.end());
   if(sorted){
     std::cout << "[SUCCESS] Sorting small struct (key,value) array.\n";
   }else{
     std::cout << "[FAILED] Sorting small integer array.\n";
+    for(size_t i = 0; i < values.size(); ++i){
+       std::cout << "o:n " << std::setfill('0') << std::setw(4) << std::hex << values_old[i] << ":" << std::setfill('0') << std::setw(4) << std::hex << values[i] << '\n';
+    }
     return 1;
   }
 
