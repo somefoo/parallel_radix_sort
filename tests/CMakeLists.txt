@@ -34,4 +34,6 @@ add_executable(radix_sort_compare radix_sort_compare.cpp control.hpp)
 target_link_libraries(radix_sort_compare PRIVATE radix_sort)
 add_test(SimpleRadixSortSeqFastTest simple_radix_sort_seq_fast_test)
 
-
+add_executable(radix_sort_par_short_test radix_sort_par_short_test.cpp control.hpp)
+target_link_libraries(radix_sort_par_short_test PRIVATE radix_sort)
+add_test(RadixSortParShortTest radix_sort_par_short_test)
