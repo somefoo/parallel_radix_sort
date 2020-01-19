@@ -22,7 +22,7 @@ int main() {
   auto key_getter_pair = [](const key_data_pair& a) {return a.key;};
   
 
-  rdx::radix_sort_seq(elements_pair.begin(), elements_pair.end(), key_getter_pair);
+  rdx::radix_sort_par(elements_pair.begin(), elements_pair.end(), key_getter_pair);
 //  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
 
   bool sorted = std::is_sorted(elements_pair.begin(), elements_pair.end(), comp_pair);
