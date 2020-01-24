@@ -7,10 +7,6 @@ set (CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-O3 -ggdb -Wall -Wextra")
 
-add_executable(radix_sort_fast_test radix_sort_fast_test.cpp control.hpp)
-target_link_libraries(radix_sort_fast_test PRIVATE radix_sort)
-add_test(RadixSortFastTest radix_sort_fast_test)
-
 add_executable(radix_sort_par_fast_test radix_sort_par_fast_test.cpp control.hpp)
 target_link_libraries(radix_sort_par_fast_test PRIVATE radix_sort)
 add_test(RadixSortParFastTest radix_sort_par_fast_test)

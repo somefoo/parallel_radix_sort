@@ -17,19 +17,6 @@
 
 namespace rdx {
 namespace {}
-template <typename Iterator, typename Comparator>
-static inline void radix_sort(const Iterator begin, const Iterator end,
-                              const Comparator comp) {
-  typedef typename std::iterator_traits<Iterator>::value_type KeyType;
-  constexpr const size_t window_size = 1 << 2;
-  constexpr const size_t window_count = (sizeof(KeyType) * 8) / window_size;
-  const size_t element_count = (end - begin);
-
-  std::cout << "window_count:" << window_count << " window_size:" << window_size
-            << " element_count:" << element_count << '\n';
-
-  std::sort(begin, end, comp);
-}
 
 template <typename Iterator, typename KeyGetter>
 static inline void radix_sort_seq(const Iterator begin, const Iterator end,
