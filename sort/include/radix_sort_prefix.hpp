@@ -46,7 +46,6 @@ static inline void radix_sort_prefix_par(const Iterator begin, const Iterator en
   for (size_t depth = 0; depth < size_of_key; ++depth) {
     // Read bytes and count occurances
 
-#pragma omp parallel
     //static schedule to minimise false sharing
     #pragma omp parallel for schedule(static) 
     for (size_t i = 0; i < element_count; ++i) {
@@ -76,10 +75,10 @@ static inline void radix_sort_prefix_par(const Iterator begin, const Iterator en
     for(size_t index = 0; index < 256; ++index){
       for(size_t thread = 1; thread < thread_count; ++thread){
         buckets[thread][index] = buckets[thread - 1][index] + bucket_sizes[thread - 1][index];
-        std::cout << "i:" << index << " t:" << thread << " at: " <<(uint64_t) (buckets[thread][index] - begin_cache) << '\n';
+        //std::cout << "i:" << index << " t:" << thread << " at: " <<(uint64_t) (buckets[thread][index] - begin_cache) << '\n';
       }
       if(index < 255)
-        buckets[0][index + 1] = buckets[thread_count - 1][index];
+        buckets[0][index + 1] = buckets[thread_count - 1][index] + bucket_sizes[thread_count - 1][index];
     }
 
     TIME_PRINT_RESET("Create initial buckets");

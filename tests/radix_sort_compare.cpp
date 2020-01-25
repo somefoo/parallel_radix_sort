@@ -2,6 +2,7 @@
 #include <vector>
 #include "control.hpp"
 #include <radix_sort.hpp>
+#include <radix_sort_prefix.hpp>
 #include <iomanip>
 #include <debug_helper.hpp>
 #if 0
@@ -50,21 +51,26 @@ int main() {
 	auto getter = [](const uint32_t& val){return val;};
 
   TIME_FUNCTION(rdx::radix_sort_par_nibble(values2.begin(), values2.end(), getter);, " par. nibble time");
-  values2 = values;
   sorted &= std::is_sorted(values2.begin(), values2.end());
+  values2 = values;
 
   TIME_FUNCTION(rdx::radix_sort_par(values2.begin(), values2.end(), getter);, " par. byte time");
-  values2 = values;
   sorted &= std::is_sorted(values2.begin(), values2.end());
+  values2 = values;
 
 
   TIME_FUNCTION(rdx::radix_sort_par_short(values2.begin(), values2.end(), getter);, " par. short time");
-  values2 = values;
   sorted &= std::is_sorted(values2.begin(), values2.end());
+  values2 = values;
 
   TIME_FUNCTION(rdx::radix_sort_seq(values2.begin(), values2.end(), getter);, " seq. byte time");
-  values2 = values;
   sorted &= std::is_sorted(values2.begin(), values2.end());
+  values2 = values;
+
+
+  TIME_FUNCTION(rdx::radix_sort_prefix_par(values2.begin(), values2.end(), getter);, " par. prefix time");
+  sorted &= std::is_sorted(values2.begin(), values2.end());
+  values2 = values;
 //  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
 
   if(sorted){

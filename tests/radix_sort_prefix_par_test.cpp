@@ -4,19 +4,19 @@
 #include <radix_sort_prefix.hpp>
 #include <radix_sort.hpp>
 #include <iomanip>
-#if 1
+#if 0
 struct key_data_pair {
   key_data_pair() {
     static uint32_t up_counter = 0;
     key = up_counter % 59159;
-    up_counter += 323531;
+    up_counter += 163417;
   }
   uint32_t key;
   uint32_t data[11]{0xffffff};
 };
 
 int main() {
-  std::vector<key_data_pair> elements_pair(16);
+  std::vector<key_data_pair> elements_pair(100);
   std::vector<key_data_pair> elements_pair_old(elements_pair);
   std::vector<key_data_pair> elements_pair_sorted(elements_pair);
 
