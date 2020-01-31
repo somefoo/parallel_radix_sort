@@ -42,4 +42,8 @@ add_executable(radix_sort_prefix_par_nibble_test radix_sort_prefix_par_nibble_te
 target_link_libraries(radix_sort_prefix_par_nibble_test PRIVATE radix_sort)
 add_test(RadixSortPrefixParNibbleTest radix_sort_prefix_par_nibble_test)
 
+add_executable(radix_sort_prefix_par_short_test radix_sort_prefix_par_short_test.cpp control.hpp)
+target_link_libraries(radix_sort_prefix_par_short_test PRIVATE radix_sort)
+add_test(RadixSortPrefixParShortTest radix_sort_prefix_par_short_test)
+
 
