@@ -183,16 +183,23 @@ static inline void radix_sort_par_nibble(const Iterator begin, const Iterator en
     std::array<size_t, 16> bucket_size{0};  // Init to 0
     // Read bytes and count occurances
 
-    //static schedule to minimise false sharing
-    const uint8_t shift = (depth & 1) * 4;
-    const uint8_t mask = 0b00001111 << shift;
-    #pragma omp parallel for schedule(static) 
-    for (size_t i = 0; i < element_count; ++i) {
-      auto key = key_getter(*(begin_original + i)); 
-      key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth/2];
-      key_cache[i] = (key_cache[i] & mask) >> shift;
-    }
-    TIME_PRINT_RESET("Create Cache");
+	if(depth & 0x1){                                                    
+		//create the key cache                                            
+		//static schedule to minimise false sharing                       
+		#pragma omp parallel for schedule(static)                         
+		for (size_t i = 0; i < element_count; ++i) {                      
+			auto key = key_getter(*(begin_original + i));                   
+			key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth/2] >> 4;  
+		}                                                                 
+	} else{                                                             
+		#pragma omp parallel for schedule(static)                         
+		for (size_t i = 0; i < element_count; ++i) {                      
+			auto key = key_getter(*(begin_original + i));                   
+			key_cache[i] = reinterpret_cast<uint8_t*>(&key)[depth/2] & 0x0f;
+		}                                                                 
+	}                                                                   
+
+
 
     //TODO this is not running parallel?
     #pragma omp parallel
