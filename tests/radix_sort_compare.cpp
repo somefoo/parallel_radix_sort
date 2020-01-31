@@ -68,7 +68,12 @@ int main() {
   values2 = values;
 
 
-  TIME_FUNCTION(rdx::radix_sort_prefix_par(values2.begin(), values2.end(), getter);, " par. prefix time");
+  TIME_FUNCTION(rdx::radix_sort_prefix_par(values2.begin(), values2.end(), getter);, " par. prefix time byte");
+  sorted &= std::is_sorted(values2.begin(), values2.end());
+  values2 = values;
+
+
+  TIME_FUNCTION(rdx::radix_sort_prefix_par_nibble(values2.begin(), values2.end(), getter);, " par. prefix time nibble");
   sorted &= std::is_sorted(values2.begin(), values2.end());
   values2 = values;
 //  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
