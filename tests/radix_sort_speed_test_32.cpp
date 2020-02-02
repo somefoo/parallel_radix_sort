@@ -17,7 +17,6 @@ int main() {
   std::vector<uint32_t> values2(min_count);
   values2 = values;
 
-  bool sorted = 1;
 	auto getter = [](const auto& val){return val;};
 
 	auto time_average = [&](auto f, size_t count, std::string name){

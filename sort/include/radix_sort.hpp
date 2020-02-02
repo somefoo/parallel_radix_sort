@@ -78,7 +78,6 @@ template <typename Iterator, typename KeyGetter>
 static inline void radix_sort_par(const Iterator begin, const Iterator end,
                                   const KeyGetter key_getter) {
   TIME_START();
-  static constexpr size_t core_count = 8;
   typedef typename std::iterator_traits<Iterator>::value_type data_type;
   constexpr const size_t size_of_key = sizeof(key_getter(*begin));
   const size_t element_count = std::distance(begin, end);
@@ -164,7 +163,6 @@ template <typename Iterator, typename KeyGetter>
 static inline void radix_sort_par_nibble(const Iterator begin, const Iterator end,
                                   const KeyGetter key_getter) {
   TIME_START();
-  static constexpr size_t core_count = 8;
   typedef typename std::iterator_traits<Iterator>::value_type data_type;
   constexpr const size_t size_of_key = sizeof(key_getter(*begin));
   const size_t element_count = std::distance(begin, end);
@@ -260,7 +258,6 @@ template <typename Iterator, typename KeyGetter>
 static inline void radix_sort_par_short(const Iterator begin, const Iterator end,
                                   const KeyGetter key_getter) {
   TIME_START();
-  static constexpr size_t core_count = 8;
   typedef typename std::iterator_traits<Iterator>::value_type data_type;
   constexpr const size_t size_of_key = sizeof(key_getter(*begin));
   const size_t element_count = std::distance(begin, end);
