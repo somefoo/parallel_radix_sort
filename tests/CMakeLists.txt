@@ -10,8 +10,12 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O3 -ggdb -Wall -Wextra")
 add_executable(radix_sort_compare radix_sort_compare.cpp control.hpp)
 target_link_libraries(radix_sort_compare PRIVATE radix_sort)
 
-add_executable(radix_sort_speed_test radix_sort_speed_test.cpp control.hpp)
-target_link_libraries(radix_sort_speed_test PRIVATE radix_sort)
+add_executable(radix_sort_speed_test_32 radix_sort_speed_test_32.cpp control.hpp)
+target_link_libraries(radix_sort_speed_test_32 PRIVATE radix_sort)
+
+
+add_executable(radix_sort_speed_test_64 radix_sort_speed_test_64.cpp control.hpp)
+target_link_libraries(radix_sort_speed_test_64 PRIVATE radix_sort)
 
 add_executable(radix_sort_par_fast_test radix_sort_par_fast_test.cpp control.hpp)
 target_link_libraries(radix_sort_par_fast_test PRIVATE radix_sort)
