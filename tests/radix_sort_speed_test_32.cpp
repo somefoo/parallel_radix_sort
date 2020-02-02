@@ -68,6 +68,10 @@ int main() {
     rdx::radix_sort_seq(values2.begin(), values2.end(), getter); 
   };
 
+  auto run_std_sort = [&](){
+    std::sort(values2.begin(), values2.end()); 
+  };
+
   //std::cout << "\talgo" << "\tcount" << "\trepeat" << "\tavg_time";
 	for(size_t count = min_count; count <= max_count; count *= 2){
     values = std::vector<uint32_t>(count); 
@@ -82,6 +86,7 @@ int main() {
 		time_average(run_par_nibble, count,                           "par_(nibble)                        ");
 		time_average(run_par_short, count,                            "par_(short)                         ");
 		time_average(run_seq, count,                                  "seq_(byte)                          ");
+		time_average(run_std_sort, count,                             "std_sort                            ");
 	}
 
 
