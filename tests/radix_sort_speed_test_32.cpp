@@ -28,8 +28,8 @@ int main() {
 			total_time += std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();\
 			values2 = values;
 		}
-		std::cout << "algo=" << name << "\tcount=" << count << "\trepeat=" << repeat << "\tavg_time=" << std::fixed << std::setprecision(10) << (double) total_time / (double) 1e+6 << std::endl;
 		total_time = total_time / repeat;
+		std::cout << "algo=" << name << "\tcount=" << count << "\trepeat=" << repeat << "\tavg_time=" << std::fixed << std::setprecision(10) << (double) total_time / (double) 1e+6 << std::endl;
 	};
 	
   auto run_prefix_par_no_cache_write_back_cache = [&](){
