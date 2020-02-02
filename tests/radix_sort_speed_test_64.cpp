@@ -32,62 +32,41 @@ int main() {
 		total_time = total_time / repeat;
 	};
 	
-  auto run_prefix_par_no_cache_write_back_cache = [&](){
+  auto run_prefix_par_no_cache_write_back_cache_64 = [&](){
+    rdx::radix_sort_prefix_par_no_cache_write_back_cache<64>(values2.begin(), values2.end(), getter); 
+  };
+
+
+  auto run_prefix_par_no_cache_write_back_cache_128 = [&](){
+    rdx::radix_sort_prefix_par_no_cache_write_back_cache<128>(values2.begin(), values2.end(), getter); 
+  };
+
+
+  auto run_prefix_par_no_cache_write_back_cache_256 = [&](){
     rdx::radix_sort_prefix_par_no_cache_write_back_cache<256>(values2.begin(), values2.end(), getter); 
   };
 
-  auto run_prefix_par_no_cache = [&](){
-    rdx::radix_sort_prefix_par_no_cache(values2.begin(), values2.end(), getter); 
+
+  auto run_prefix_par_no_cache_write_back_cache_512 = [&](){
+    rdx::radix_sort_prefix_par_no_cache_write_back_cache<512>(values2.begin(), values2.end(), getter); 
   };
 
-  auto run_prefix_par = [&](){
-    rdx::radix_sort_prefix_par(values2.begin(), values2.end(), getter); 
+
+  auto run_prefix_par_no_cache_write_back_cache_1024 = [&](){
+    rdx::radix_sort_prefix_par_no_cache_write_back_cache<1024>(values2.begin(), values2.end(), getter); 
   };
 
-  auto run_prefix_par_short = [&](){
-    rdx::radix_sort_prefix_par_short(values2.begin(), values2.end(), getter); 
-  };
-
-  auto run_prefix_par_nibble = [&](){
-    rdx::radix_sort_prefix_par_nibble(values2.begin(), values2.end(), getter); 
-  };
-
-  auto run_par = [&](){
-    rdx::radix_sort_par(values2.begin(), values2.end(), getter); 
-  };
-
-  auto run_par_short = [&](){
-    rdx::radix_sort_par_short(values2.begin(), values2.end(), getter); 
-  };
-
-  auto run_par_nibble = [&](){
-    rdx::radix_sort_par_nibble(values2.begin(), values2.end(), getter); 
-  };
-
-  auto run_seq = [&](){
-    rdx::radix_sort_seq(values2.begin(), values2.end(), getter); 
-  };
-
-  auto run_std_sort = [&](){                  
-      std::sort(values2.begin(), values2.end());
-  };                                          
 
   //std::cout << "\talgo" << "\tcount" << "\trepeat" << "\tavg_time";
 	for(size_t count = min_count; count <= max_count; count *= 2){
     values = std::vector<uint64_t>(count); 
     std::generate(values.begin(), values.end(), std::rand);
     values2 = values;
-		time_average(run_prefix_par_no_cache_write_back_cache, count, "prefix_par_no_cache_write_back_cache");
-		time_average(run_prefix_par_no_cache, count,                  "prefix_par_no_cache                 ");
-		time_average(run_prefix_par, count,                           "prefix_par_(byte)                   ");
-		time_average(run_prefix_par_short, count,                     "prefix_par_(short)                  ");
-		time_average(run_prefix_par_nibble, count,                    "prefix_par_(nibble)                 ");
-		time_average(run_par, count,                                  "par_(byte)                          ");
-		time_average(run_par_nibble, count,                           "par_(nibble)                        ");
-		time_average(run_par_short, count,                            "par_(short)                         ");
-		time_average(run_seq, count,                                  "seq_(byte)                          ");
-    time_average(run_std_sort, count,                             "std_sort                            ");
-
+		time_average(run_prefix_par_no_cache_write_back_cache_64, count,   "prefix_par_no_cache_write_back_cache_64  ");
+		time_average(run_prefix_par_no_cache_write_back_cache_128, count,  "prefix_par_no_cache_write_back_cache_128 ");
+		time_average(run_prefix_par_no_cache_write_back_cache_256, count,  "prefix_par_no_cache_write_back_cache_256 ");
+		time_average(run_prefix_par_no_cache_write_back_cache_512, count,  "prefix_par_no_cache_write_back_cache_512 ");
+		time_average(run_prefix_par_no_cache_write_back_cache_1024, count, "prefix_par_no_cache_write_back_cache_1028");
 	}
 
 
