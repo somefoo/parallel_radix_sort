@@ -472,7 +472,7 @@ static inline void radix_sort_prefix_par_no_cache_write_back_cache(const Iterato
       //note, std::move would not prevent?
       std::array<data_type*, 256> bucket_local = buckets[omp_get_thread_num()];
 
-      constexpr int csize = 64;
+      constexpr int csize = 128;
       std::array<std::array<data_type, csize>,256> local_cache;
       std::array<uint8_t, 256> local_cache_size{0};
       
@@ -483,15 +483,13 @@ static inline void radix_sort_prefix_par_no_cache_write_back_cache(const Iterato
         local_cache[k][local_cache_size[k]] = std::move(*(begin_original + i));
         local_cache_size[k]++;
         if(local_cache_size[k] == csize){
-          std::copy_n(local_cache[k].begin(), csize, bucket_local[k]);
+          std::move(local_cache[k].begin(),local_cache[k].begin() + csize, bucket_local[k]);
           bucket_local[k] += csize;
           local_cache_size[k] = 0;
         }
-
-        //*(bucket_local[get_depth_key(i)]++) = std::move(*(begin_original + i));
       }	
       for(int i = 0; i < 256; ++i){
-        std::copy_n(local_cache[i].begin(), local_cache_size[i], bucket_local[i]);
+        std::move(local_cache[i].begin(), local_cache[i].begin() + local_cache_size[i], bucket_local[i]);
       }
     }
     TIME_PRINT_RESET("Redistribute data");
