@@ -226,10 +226,14 @@ static inline void radix_sort_par_nibble(const Iterator begin, const Iterator en
 		}	
 
     //TODO The greates performance hit comes here!  
+    #pragma omp parallel num_threads(16)
     {
+    std::array<data_type*, 16> bucket_local = bucket;
+    const int thread_id = omp_get_thread_num();
     //#pragma omp for
 		for(size_t i = 0; i < element_count; ++i){
-			*(bucket[key_cache[i]]++) = std::move(*(begin_original + i));
+      if(key_cache[i] % 16 == thread_id)
+			*(bucket_local[key_cache[i]]++) = std::move(*(begin_original + i));
 		}	
     }
     TIME_PRINT_RESET("Redistribute data");
