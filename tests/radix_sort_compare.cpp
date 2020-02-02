@@ -82,7 +82,7 @@ int main() {
   sorted &= std::is_sorted(values2.begin(), values2.end());
   values2 = values;
 
-  TIME_FUNCTION(rdx::radix_sort_prefix_par_no_cache_write_back_cache(values2.begin(), values2.end(), getter);, " par. prefix no cache write back cache time");
+  TIME_FUNCTION(rdx::radix_sort_prefix_par_no_cache_write_back_cache<256>(values2.begin(), values2.end(), getter);, " par. prefix no cache write back cache time");
   sorted &= std::is_sorted(values2.begin(), values2.end());
   values2 = values;
 

@@ -33,7 +33,7 @@ int main() {
 	};
 	
   auto run_prefix_par_no_cache_write_back_cache = [&](){
-    rdx::radix_sort_prefix_par_no_cache_write_back_cache(values2.begin(), values2.end(), getter); 
+    rdx::radix_sort_prefix_par_no_cache_write_back_cache<256>(values2.begin(), values2.end(), getter); 
   };
 
   auto run_prefix_par_no_cache = [&](){

@@ -44,7 +44,7 @@ int main() {
   std::generate(values.begin(), values.end(), std::rand);
 
 	auto getter = [](const uint32_t& val){return val;};
-  rdx::radix_sort_prefix_par_no_cache_write_back_cache(values.begin(), values.end(), getter);
+  rdx::radix_sort_prefix_par_no_cache_write_back_cache<256>(values.begin(), values.end(), getter);
 //  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
 
   bool sorted = std::is_sorted(values.begin(), values.end());

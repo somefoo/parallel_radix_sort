@@ -398,7 +398,7 @@ static inline void radix_sort_prefix_par_no_cache(const Iterator begin, const It
   }
 }
 
-template <typename Iterator, typename KeyGetter>
+template <int cache_size, typename Iterator, typename KeyGetter>
 static inline void radix_sort_prefix_par_no_cache_write_back_cache(const Iterator begin, const Iterator end,
                                   const KeyGetter key_getter) {
   TIME_START();
@@ -472,7 +472,7 @@ static inline void radix_sort_prefix_par_no_cache_write_back_cache(const Iterato
       //note, std::move would not prevent?
       std::array<data_type*, 256> bucket_local = buckets[omp_get_thread_num()];
 
-      constexpr int csize = 128;
+      constexpr int csize = cache_size;
       std::array<std::array<data_type, csize>,256> local_cache;
       std::array<uint8_t, 256> local_cache_size{0};
       
