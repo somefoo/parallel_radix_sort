@@ -1,7 +1,7 @@
 #pragma once
 #include <chrono>
 
-
+#if 0
 #define TIME_FUNCTION(function, comment) \
   {\
   auto t1 = std::chrono::high_resolution_clock::now();\
@@ -27,3 +27,10 @@
   std::cout << "[CUSTOM TIMER] " << comment << int_ms_x0.count()/1000.0f << "s" << std::endl;\
   t1_x0 = std::chrono::high_resolution_clock::now();\
 }
+#else
+#define TIME_FUNCTION(function, comment)
+#define TIME_START()
+#define TIME_RESET()
+#define TIME_PRINT(comment)
+#define TIME_PRINT_RESET(comment)
+#endif

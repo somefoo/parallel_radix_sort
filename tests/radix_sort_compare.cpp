@@ -48,7 +48,7 @@ int main() {
   values2 = values;
 
   bool sorted = 1;
-	auto getter = [](const uint32_t& val){return val;};
+	auto getter = [](const auto& val){return val;};
 
   TIME_FUNCTION(rdx::radix_sort_par_nibble(values2.begin(), values2.end(), getter);, " par. nibble time");
   sorted &= std::is_sorted(values2.begin(), values2.end());
