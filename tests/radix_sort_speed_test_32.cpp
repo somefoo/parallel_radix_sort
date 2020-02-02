@@ -5,6 +5,8 @@
 #include <radix_sort_prefix.hpp>
 #include <iomanip>
 #include <debug_helper.hpp>
+#include <tlx/sort/parallel_mergesort.hpp>
+#include <tlx/sort/parallel_radixsort.hpp>
 
 
 int main() {
@@ -31,7 +33,21 @@ int main() {
 		total_time = total_time / repeat;
 		std::cout << "algo=" << name << "\tcount=" << count << "\trepeat=" << repeat << "\tavg_time=" << std::fixed << std::setprecision(10) << (double) total_time / (double) 1e+6 << std::endl;
 	};
-	
+
+  auto run_tlx_mergesort = [&](){
+    tlx::parallel_mergesort(values2.begin(), values2.end());
+  };
+
+  auto run_tlx_radixsort_8 = [&]() {
+    using Iterator = typename std::vector<uint32_t>::iterator;
+    using T = typename std::iterator_traits<Iterator>::value_type;
+    using key_type = uint8_t;
+
+    tlx::parallel_radixsort_detail::radix_sort<
+        Iterator, tlx::parallel_radixsort_detail::get_key<T, key_type>>(
+                values2.begin(), values2.end(), sizeof(T)/sizeof(key_type));
+   };
+
   auto run_prefix_par_no_cache_write_back_cache = [&](){
     rdx::radix_sort_prefix_par_no_cache_write_back_cache(values2.begin(), values2.end(), getter); 
   };
@@ -77,8 +93,10 @@ int main() {
     values = std::vector<uint32_t>(count); 
     std::generate(values.begin(), values.end(), std::rand);
     values2 = values;
-		time_average(run_prefix_par_no_cache_write_back_cache, count, "prefix_par_no_cache_write_back_cache");
-		time_average(run_prefix_par_no_cache, count,                  "prefix_par_no_cache                 ");
+		time_average(run_tlx_radixsort_8, count,                        "tlx_msd_sort                        ");
+		time_average(run_tlx_mergesort, count,                          "tlx_merge_sort                      ");
+		time_average(run_prefix_par_no_cache_write_back_cache, count,   "prefix_par_no_cache_write_back_cache");
+		time_average(run_prefix_par_no_cache, count,                    "prefix_par_no_cache                 ");
 		time_average(run_prefix_par, count,                           "prefix_par_(byte)                   ");
 		time_average(run_prefix_par_short, count,                     "prefix_par_(short)                  ");
 		time_average(run_prefix_par_nibble, count,                    "prefix_par_(nibble)                 ");

@@ -15,7 +15,7 @@
 
 #include "debug_helper.hpp"
 
-#define DIST_THREAD_COUNT 16
+#define DIST_THREAD_COUNT 64
 
 namespace rdx {
 namespace {}
