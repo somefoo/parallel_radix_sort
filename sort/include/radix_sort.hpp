@@ -15,6 +15,8 @@
 
 #include "debug_helper.hpp"
 
+#define DIST_THREAD_COUNT 16
+
 namespace rdx {
 namespace {}
 
@@ -130,13 +132,13 @@ static inline void radix_sort_par(const Iterator begin, const Iterator end,
 		}	
 
     //TODO The greates performance hit comes here!  
-    #pragma omp parallel num_threads(16)
+    #pragma omp parallel num_threads(DIST_THREAD_COUNT)
     {
     std::array<data_type*, 256> bucket_local = bucket;
     const int thread_id = omp_get_thread_num();
     //#pragma omp for
 		for(size_t i = 0; i < element_count; ++i){
-      if(key_cache[i] % 16 == thread_id)
+      if(key_cache[i] % DIST_THREAD_COUNT == thread_id)
 			*(bucket_local[key_cache[i]]++) = std::move(*(begin_original + i));
 		}	
     }
@@ -226,13 +228,13 @@ static inline void radix_sort_par_nibble(const Iterator begin, const Iterator en
 		}	
 
     //TODO The greates performance hit comes here!  
-    #pragma omp parallel num_threads(16)
+    #pragma omp parallel num_threads(DIST_THREAD_COUNT)
     {
     std::array<data_type*, 16> bucket_local = bucket;
     const int thread_id = omp_get_thread_num();
     //#pragma omp for
 		for(size_t i = 0; i < element_count; ++i){
-      if(key_cache[i] % 16 == thread_id)
+      if(key_cache[i] % DIST_THREAD_COUNT == thread_id)
 			*(bucket_local[key_cache[i]]++) = std::move(*(begin_original + i));
 		}	
     }
@@ -312,13 +314,13 @@ static inline void radix_sort_par_short(const Iterator begin, const Iterator end
 		}	
 
     //TODO The greates performance hit comes here!  
-    #pragma omp parallel num_threads(16)
+    #pragma omp parallel num_threads(DIST_THREAD_COUNT)
     {
     std::array<data_type*, 65536> bucket_local = bucket;
     const int thread_id = omp_get_thread_num();
     //#pragma omp for
 		for(size_t i = 0; i < element_count; ++i){
-      if(key_cache[i] % 16 == thread_id)
+      if(key_cache[i] % DIST_THREAD_COUNT == thread_id)
 			*(bucket_local[key_cache[i]]++) = std::move(*(begin_original + i));
 		}	
     }
