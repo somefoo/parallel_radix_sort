@@ -474,7 +474,7 @@ static inline void radix_sort_prefix_par_no_cache_write_back_cache(const Iterato
 
       constexpr int csize = cache_size;
       std::array<std::array<data_type, csize>,256> local_cache;
-      std::array<uint8_t, 256> local_cache_size{0};
+      std::array<uint16_t, 256> local_cache_size{0};
       
 
       #pragma omp for schedule(static)
