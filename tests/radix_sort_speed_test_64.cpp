@@ -21,15 +21,16 @@ int main() {
 
 	auto time_average = [&](auto f, size_t count, std::string name){
 		auto total_time = 0;
-		for(size_t i = 0; i < repeat; ++i){
+    size_t i = 0;
+		for(i = 0; i < repeat || total_time < 4000000; ++i){
 			auto t1 = std::chrono::high_resolution_clock::now();
 			f();
 			auto t2 = std::chrono::high_resolution_clock::now();\
 			total_time += std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count();\
 			values2 = values;
 		}
-		total_time = total_time / repeat;
-		std::cout << "algo=" << name << "\tcount=" << count << "\trepeat=" << repeat << "\tavg_time=" << std::fixed << std::setprecision(10) << (double) total_time / (double) 1e+6 << std::endl;
+		total_time = total_time / i;
+		std::cout << "algo=" << name << "\tcount=" << count << "\trepeat=" << i << "\tavg_time=" << std::fixed << std::setprecision(10) << (double) total_time / (double) 1e+6 << std::endl;
 	};
 	
   auto run_prefix_par_no_cache = [&](){
@@ -77,3 +78,4 @@ int main() {
 
   return 0;
 }
+
