@@ -22,7 +22,7 @@ int main() {
 	auto time_average = [&](auto f, size_t count, std::string name){
 		auto total_time = 0;
     size_t i = 0;
-		for(i = 0; i < repeat || total_time < 4000000; ++i){
+		for(i = 0; i < repeat || total_time < 10000000; ++i){
 			auto t1 = std::chrono::high_resolution_clock::now();
 			f();
 			auto t2 = std::chrono::high_resolution_clock::now();\
