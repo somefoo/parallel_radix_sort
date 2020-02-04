@@ -10,48 +10,9 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O3 -ggdb -Wall -Wextra")
 add_executable(radix_sort_compare radix_sort_compare.cpp control.hpp)
 target_link_libraries(radix_sort_compare PRIVATE radix_sort)
 
-add_executable(radix_sort_speed_test_32 radix_sort_speed_test_32.cpp control.hpp)
-target_link_libraries(radix_sort_speed_test_32 PRIVATE radix_sort tlx)
-
-
-add_executable(radix_sort_speed_test_64 radix_sort_speed_test_64.cpp control.hpp)
-target_link_libraries(radix_sort_speed_test_64 PRIVATE radix_sort tlx)
-
-add_executable(radix_sort_par_fast_test radix_sort_par_fast_test.cpp control.hpp)
-target_link_libraries(radix_sort_par_fast_test PRIVATE radix_sort)
-add_test(RadixSortParFastTest radix_sort_par_fast_test)
-
-add_executable(radix_sort_seq_test radix_sort_seq_test.cpp control.hpp)
-target_link_libraries(radix_sort_seq_test PRIVATE radix_sort)
-add_test(RadixSortSeqTest radix_sort_seq_test)
-
-add_executable(radix_sort_par_test radix_sort_par_test.cpp control.hpp)
-target_link_libraries(radix_sort_par_test PRIVATE radix_sort)
-add_test(RadixSortParTest radix_sort_par_test)
-
-add_executable(radix_sort_par_nibble_test radix_sort_par_nibble_test.cpp control.hpp)
-target_link_libraries(radix_sort_par_nibble_test PRIVATE radix_sort)
-add_test(RadixSortParNibbleTest radix_sort_par_nibble_test)
-
-add_executable(simple_radix_sort_seq_fast_test simple_radix_sort_fast_test.cpp control.hpp)
-target_link_libraries(simple_radix_sort_seq_fast_test PRIVATE radix_sort)
-add_test(SimpleRadixSortSeqFastTest simple_radix_sort_seq_fast_test)
-
-add_executable(radix_sort_par_short_test radix_sort_par_short_test.cpp control.hpp)
-target_link_libraries(radix_sort_par_short_test PRIVATE radix_sort)
-add_test(RadixSortParShortTest radix_sort_par_short_test)
-
 add_executable(radix_sort_prefix_par_test radix_sort_prefix_par_test.cpp control.hpp)
 target_link_libraries(radix_sort_prefix_par_test PRIVATE radix_sort)
 add_test(RadixSortPrefixParTest radix_sort_prefix_par_test)
-
-add_executable(radix_sort_prefix_par_nibble_test radix_sort_prefix_par_nibble_test.cpp control.hpp)
-target_link_libraries(radix_sort_prefix_par_nibble_test PRIVATE radix_sort)
-add_test(RadixSortPrefixParNibbleTest radix_sort_prefix_par_nibble_test)
-
-add_executable(radix_sort_prefix_par_short_test radix_sort_prefix_par_short_test.cpp control.hpp)
-target_link_libraries(radix_sort_prefix_par_short_test PRIVATE radix_sort)
-add_test(RadixSortPrefixParShortTest radix_sort_prefix_par_short_test)
 
 add_executable(radix_sort_prefix_par_no_cache_test radix_sort_prefix_par_no_cache_test.cpp control.hpp)
 target_link_libraries(radix_sort_prefix_par_no_cache_test PRIVATE radix_sort)

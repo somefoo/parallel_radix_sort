@@ -2,7 +2,6 @@
 #include <vector>
 #include "control.hpp"
 #include <radix_sort_prefix.hpp>
-#include <radix_sort.hpp>
 #include <iomanip>
 #if 0
 struct key_data_pair {

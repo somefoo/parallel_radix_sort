@@ -1,7 +1,6 @@
 #include <array>
 #include <vector>
 #include "control.hpp"
-#include <radix_sort.hpp>
 #include <radix_sort_prefix.hpp>
 #include <iomanip>
 #include <debug_helper.hpp>
@@ -50,33 +49,9 @@ int main() {
   bool sorted = 1;
 	auto getter = [](const auto& val){return val;};
 
-  TIME_FUNCTION(rdx::radix_sort_par_nibble(values2.begin(), values2.end(), getter);, " par. nibble time");
-  sorted &= std::is_sorted(values2.begin(), values2.end());
-  values2 = values;
-
-  TIME_FUNCTION(rdx::radix_sort_par(values2.begin(), values2.end(), getter);, " par. byte time");
-  sorted &= std::is_sorted(values2.begin(), values2.end());
-  values2 = values;
-
-
-  TIME_FUNCTION(rdx::radix_sort_par_short(values2.begin(), values2.end(), getter);, " par. short time");
-  sorted &= std::is_sorted(values2.begin(), values2.end());
-  values2 = values;
-
-  TIME_FUNCTION(rdx::radix_sort_seq(values2.begin(), values2.end(), getter);, " seq. byte time");
-  sorted &= std::is_sorted(values2.begin(), values2.end());
-  values2 = values;
-
-
   TIME_FUNCTION(rdx::radix_sort_prefix_par(values2.begin(), values2.end(), getter);, " par. prefix byte time");
   sorted &= std::is_sorted(values2.begin(), values2.end());
   values2 = values;
-
-
-  TIME_FUNCTION(rdx::radix_sort_prefix_par_nibble(values2.begin(), values2.end(), getter);, " par. prefix nibble time");
-  sorted &= std::is_sorted(values2.begin(), values2.end());
-  values2 = values;
-
 
   TIME_FUNCTION(rdx::radix_sort_prefix_par_no_cache(values2.begin(), values2.end(), getter);, " par. prefix no cache time");
   sorted &= std::is_sorted(values2.begin(), values2.end());

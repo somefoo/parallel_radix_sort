@@ -4,5 +4,4 @@ project(radix_sort VERSION 0.1.0)
 
 ENABLE_TESTING()
 ADD_SUBDIRECTORY(sort)
-ADD_SUBDIRECTORY(lib/tlx)
 ADD_SUBDIRECTORY(tests)
