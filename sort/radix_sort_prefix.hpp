@@ -1,3 +1,34 @@
+
+/*******************************************************************************
+ * sort/radix_sort_prefix.hpp
+ *
+ * Implementation of three parallel LSD radix sort methods.
+ *  radix_sort_prefix_par
+ *   Parallel LSD radix sort with key caching
+ *  radix_sort_prefix_par_no_cache
+ *   Parallel LSD radix sort without key caching
+ *  radix_sort_prefix_par_no_cache_write_back_cache
+ *   Parallel LSD radix sort without key caching but a write back buffer/cache,
+ *   meaning, each thread writes to a local buffer before commiting elements to
+ *   the secondary (OOP) array.
+ *   WARNING: As the local buffer is on the stack, the size of the (key,value)
+ *   elements is limited; depending on the stack size your OS allocates for
+ *   each thread. If you get funny segfaults, you probably didn't read this :P
+ * 
+ *   I suggest you look at the tests to see how to use these functions.
+ *   
+ * Copyright (C) 2020 by Pit Henrich <pithenrich2d@gmail.com>
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION
+ ******************************************************************************/
+
 #pragma once
 #include <algorithm>
 #include <array>
