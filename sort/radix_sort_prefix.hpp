@@ -14,14 +14,14 @@
  *   WARNING: As the local buffer is on the stack, the size of the (key,value)
  *   elements is limited; depending on the stack size your OS allocates for
  *   each thread. If you get funny segfaults, you probably didn't read this :P
- * 
+ *
  *   I suggest you look at the tests to see how to use these functions.
- *   
+ *
  * Copyright (C) 2020 by Pit Henrich <pithenrich2d@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
  * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
  * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
@@ -251,6 +251,9 @@ static inline void radix_sort_prefix_par_no_cache_write_back_cache(
   const size_t thread_count = omp_get_max_threads();
   typedef typename std::iterator_traits<Iterator>::value_type data_type;
   constexpr const size_t size_of_key = sizeof(key_getter(*begin));
+  static_assert(sizeof(data_type) <= 16,
+                "Sorted object too large, cache is stack based. The other "
+                "sorts do not have this limitation.");
   const size_t element_count = std::distance(begin, end);
 
   // The key cache contains the key value for the current radix
