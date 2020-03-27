@@ -47,7 +47,7 @@ int main() {
   std::sort(sorted_values.begin(), sorted_values.end());
 
   auto getter = [](const uint32_t& val) { return val; };
-  rdx::radix_sort_prefix_par_no_cache_write_back_cache(values.begin(),
+  rdx::radix_sort_prefix_par_no_cache_write_back_buffer(values.begin(),
                                                        values.end(), getter);
 
   bool sorted = (values == sorted_values);

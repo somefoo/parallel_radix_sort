@@ -7,7 +7,7 @@
  *   Parallel LSD radix sort with key caching
  *  radix_sort_prefix_par_no_cache
  *   Parallel LSD radix sort without key caching
- *  radix_sort_prefix_par_no_cache_write_back_cache
+ *  radix_sort_prefix_par_no_cache_write_back_buffer
  *   Parallel LSD radix sort without key caching but a write back buffer/cache,
  *   meaning, each thread writes to a local buffer before commiting elements to
  *   the secondary (OOP) array.
@@ -243,7 +243,7 @@ static inline void radix_sort_prefix_par_no_cache(const Iterator begin,
 }
 
 template <typename Iterator, typename KeyGetter>
-static inline void radix_sort_prefix_par_no_cache_write_back_cache(
+static inline void radix_sort_prefix_par_no_cache_write_back_buffer(
     const Iterator begin, const Iterator end, const KeyGetter key_getter) {
   TIME_START();
 
