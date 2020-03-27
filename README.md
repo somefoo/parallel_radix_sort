@@ -1,5 +1,5 @@
 # Parallel Radix Sort
-This is a header only implementation of a parallel radix sort using OpenMP. For more information, look at the header files. 
+This is a header only implementation of a parallel radix sort using OpenMP. For more information, look at the header files. Notice, there are more exotic versions available on the other branches, but I suggest you stick with the master branch. 
 
 Example of use:
 
