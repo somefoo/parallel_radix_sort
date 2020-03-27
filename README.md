@@ -19,7 +19,7 @@ int main() {
   rdx::radix_sort_prefix_par(values.begin(), values.end(), getter);
   
   //rdx::radix_sort_prefix_par_no_cache(values.begin(), values.end(), getter);
-  //rdx::radix_sort_prefix_par_no_cache_write_back_cache(values.begin(), values.end(), getter);
+  //rdx::radix_sort_prefix_par_no_cache_write_back_buffer(values.begin(), values.end(), getter);
   
   return 0;
 }
