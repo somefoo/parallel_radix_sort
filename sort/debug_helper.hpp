@@ -46,7 +46,7 @@
   t1_x0 = std::chrono::high_resolution_clock::now();\
 }
 #else
-#define TIME_FUNCTION(function, comment)
+#define TIME_FUNCTION(function, comment) function;
 #define TIME_START()
 #define TIME_RESET()
 #define TIME_PRINT(comment)

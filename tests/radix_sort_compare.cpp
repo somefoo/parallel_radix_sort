@@ -1,9 +1,9 @@
 #include <array>
+#include <debug_helper.hpp>
+#include <iomanip>
+#include <radix_sort_prefix.hpp>
 #include <vector>
 #include "control.hpp"
-#include <radix_sort_prefix.hpp>
-#include <iomanip>
-#include <debug_helper.hpp>
 #if 0
 struct key_data_pair {
   key_data_pair() {
@@ -47,25 +47,31 @@ int main() {
   values2 = values;
 
   bool sorted = 1;
-	auto getter = [](const auto& val){return val;};
+  auto getter = [](const auto& val) { return val; };
 
-  TIME_FUNCTION(rdx::radix_sort_prefix_par(values2.begin(), values2.end(), getter);, " par. prefix byte time");
+  TIME_FUNCTION(
+      rdx::radix_sort_prefix_par(values2.begin(), values2.end(), getter);
+      , " par. prefix byte time");
   sorted &= std::is_sorted(values2.begin(), values2.end());
   values2 = values;
 
-  TIME_FUNCTION(rdx::radix_sort_prefix_par_no_cache(values2.begin(), values2.end(), getter);, " par. prefix no cache time");
+  TIME_FUNCTION(rdx::radix_sort_prefix_par_no_cache(values2.begin(),
+                                                    values2.end(), getter);
+                , " par. prefix no cache time");
   sorted &= std::is_sorted(values2.begin(), values2.end());
   values2 = values;
 
-  TIME_FUNCTION(rdx::radix_sort_prefix_par_no_cache_write_back_cache(values2.begin(), values2.end(), getter);, " par. prefix no cache write back cache time");
+  TIME_FUNCTION(rdx::radix_sort_prefix_par_no_cache_write_back_cache(
+                    values2.begin(), values2.end(), getter);
+                , " par. prefix no cache write back cache time");
   sorted &= std::is_sorted(values2.begin(), values2.end());
   values2 = values;
 
-//  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
+  //  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
 
-  if(sorted){
+  if (sorted) {
     std::cout << "[SUCCESS] Sorting small struct (key,value) array.\n";
-  }else{
+  } else {
     std::cout << "[FAILED] Sorting small integer array.\n";
     return 1;
   }

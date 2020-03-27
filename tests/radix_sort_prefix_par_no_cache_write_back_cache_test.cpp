@@ -1,8 +1,9 @@
+#include <algorithm>
 #include <array>
+#include <iomanip>
+#include <radix_sort_prefix.hpp>
 #include <vector>
 #include "control.hpp"
-#include <radix_sort_prefix.hpp>
-#include <iomanip>
 #if 0
 struct key_data_pair {
   key_data_pair() {
@@ -42,15 +43,17 @@ int main() {
 int main() {
   std::vector<uint32_t> values(value_count);
   std::generate(values.begin(), values.end(), std::rand);
+  std::vector<uint32_t> sorted_values = values;
+  std::sort(sorted_values.begin(), sorted_values.end());
 
-	auto getter = [](const uint32_t& val){return val;};
-  rdx::radix_sort_prefix_par_no_cache_write_back_cache(values.begin(), values.end(), getter);
-//  rdx::radix_sort(elements_pair.begin(), elements_pair.end(), comp_pair);
+  auto getter = [](const uint32_t& val) { return val; };
+  rdx::radix_sort_prefix_par_no_cache_write_back_cache(values.begin(),
+                                                       values.end(), getter);
 
-  bool sorted = std::is_sorted(values.begin(), values.end());
-  if(sorted){
+  bool sorted = (values == sorted_values);
+  if (sorted) {
     std::cout << "[SUCCESS] Sorting small struct (key,value) array.\n";
-  }else{
+  } else {
     std::cout << "[FAILED] Sorting small integer array.\n";
     return 1;
   }
